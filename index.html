@@ -8,6 +8,8 @@
 <meta property="og:title" content="株式会社インターン カジュアル面談のご予約">
 <meta property="og:description" content="選考ではなく、まずはお互いを知る場として、現役のメンバーが会社のことや働き方についてお話しさせていただきます。">
 <meta property="og:type" content="website">
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <meta name="robots" content="noindex">
 <style>
   :root {
@@ -48,6 +50,11 @@
   .about ul { margin: 0; padding-left: 1.2em; font-size: 15px; }
   .about li { margin-bottom: 6px; }
   .mission { font-weight: 700; border-left: 3px solid var(--accent); padding-left: 10px; }
+  .thanks { margin: 0 0 4px; font-size: 15px; }
+  .closing { margin: 16px 0 0; font-size: 15px; font-weight: 600; }
+  .closing-card .closing { margin-top: 0; }
+  .back { display: block; margin-top: 16px; padding: 12px; text-align: center; border-radius: 8px;
+    border: 1px solid var(--accent); color: var(--accent); font-weight: 600; text-decoration: none; }
   .err { color: var(--error); font-size: 14px; margin-top: 12px; }
   .done dt { color: var(--muted); font-size: 13px; margin-top: 12px; }
   .done dd { margin: 2px 0 0; font-size: 16px; font-weight: 600; word-break: break-all; }
@@ -93,6 +100,7 @@
 
   <section class="card done" id="done" hidden>
     <h2>ご予約が完了しました</h2>
+    <p class="thanks">このたびは株式会社インターンのカジュアル面談にご予約いただき、誠にありがとうございます。</p>
     <dl>
       <dt>日時</dt><dd id="doneWhen"></dd>
       <dt>担当</dt><dd id="doneMember"></dd>
@@ -100,6 +108,7 @@
     </dl>
     <p class="msg">地下鉄御堂筋線 西中島南方駅／阪急京都線 南方駅から徒歩3分、JR新大阪駅から徒歩15分<br><a href="https://maps.app.goo.gl/bXewaHicER5rx19NA" target="_blank" rel="noopener">Googleマップで見る</a></p>
     <p class="msg">ご入力のメールアドレスに Google カレンダーの招待が届きます。届かない場合は迷惑メールフォルダもご確認ください。</p>
+    <p class="closing">当日お会いできることを、メンバー一同心より楽しみにしております。どうぞお気をつけてお越しください。</p>
   </section>
 
   <section class="card place">
@@ -128,6 +137,11 @@
       <li>あなたのこと（いま興味があること、学生のうちに挑戦したいこと）</li>
       <li>気になることへのご質問（何でもお気軽にどうぞ）</li>
     </ul>
+  </section>
+
+  <section class="card about closing-card">
+    <p class="closing">少しでも興味を持っていただけましたら、ぜひお気軽にご予約ください。みなさまとお会いできることを、メンバー一同心よりお待ちしております。</p>
+    <a class="back" href="#pick">日時を選ぶ</a>
   </section>
 </main>
 <footer>© 株式会社インターン</footer>
