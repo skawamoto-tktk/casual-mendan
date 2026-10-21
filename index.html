@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>株式会社インターン カジュアル面談のご予約</title>
+<meta name="description" content="株式会社インターンのカジュアル面談のご予約ページです。ご都合のよい日時をお選びください（対面・60分）。">
+<meta property="og:title" content="株式会社インターン カジュアル面談のご予約">
+<meta property="og:description" content="選考ではなく、まずはお互いを知る場として、現役のメンバーが会社のことや働き方についてお話しさせていただきます。">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --text: #1f2328; --muted: #5f6b7a; --line: #dfe3e8;
+    --accent: #1a73e8; --accent-weak: #e8f0fe; --error: #c5221f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    line-height: 1.6; }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  h2 { font-size: 16px; margin: 0 0 12px; }
+  .days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+  .day { flex: 0 0 auto; border: 1px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 6px 14px; font-size: 14px; cursor: pointer; color: var(--text); }
+  .day.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .time { border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 8px;
+    padding: 10px 0; font-size: 15px; cursor: pointer; }
+  .time.on { background: var(--accent-weak); font-weight: 600; }
+  label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .req { color: var(--error); font-weight: 400; font-size: 12px; margin-left: 4px; }
+  .opt { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 4px; }
+  input, textarea { width: 100%; font: inherit; font-size: 16px; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--text); }
+  textarea { min-height: 96px; resize: vertical; }
+  .picked { background: var(--accent-weak); border-radius: 8px; padding: 10px 12px; font-weight: 600; }
+  .submit { width: 100%; margin-top: 20px; padding: 14px; font-size: 16px; font-weight: 600; border: 0;
+    border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+  .submit:disabled { opacity: .5; cursor: default; }
+  .msg { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+  .addr { margin: 0; font-weight: 600; }
+  .eyebrow { margin: 0; color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+  .about p { margin: 0 0 10px; font-size: 15px; }
+  .about ul { margin: 0; padding-left: 1.2em; font-size: 15px; }
+  .about li { margin-bottom: 6px; }
+  .mission { font-weight: 700; border-left: 3px solid var(--accent); padding-left: 10px; }
+  .err { color: var(--error); font-size: 14px; margin-top: 12px; }
+  .done dt { color: var(--muted); font-size: 13px; margin-top: 12px; }
+  .done dd { margin: 2px 0 0; font-size: 16px; font-weight: 600; word-break: break-all; }
+  a { color: var(--accent); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 0 16px 32px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">株式会社インターン</p>
+  <h1>カジュアル面談のご予約</h1>
+  <p class="lead">株式会社インターンのカジュアル面談にご関心をお寄せいただき、ありがとうございます。選考ではなく、まずはお互いを知る場として、現役のメンバーが会社のことや働き方についてお話しさせていただきます。ご都合のよい日時をお選びください（対面・60分）。</p>
+
+  <section class="card" id="pick">
+    <h2>1. 日時を選ぶ</h2>
+    <p class="err" id="pickErr" hidden></p>
+    <p class="msg" id="loading">空き状況を読み込んでいます…</p>
+    <div class="days" id="days"></div>
+    <div class="times" id="times"></div>
+  </section>
+
+  <section class="card" id="formCard" hidden>
+    <h2>2. お名前・ご連絡先</h2>
+    <div class="picked" id="pickedLabel"></div>
+    <form id="form" novalidate>
+      <label for="name">氏名<span class="req">必須</span></label>
+      <input id="name" name="name" autocomplete="name" maxlength="50" required>
+      <label for="email">メールアドレス<span class="req">必須</span></label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="100" required>
+      <label for="school">大学名<span class="req">必須</span></label>
+      <input id="school" name="school" maxlength="100" required>
+      <label for="grade">学年<span class="req">必須</span></label>
+      <input id="grade" name="grade" placeholder="例：3年、修士1年" maxlength="30" required>
+      <label for="note">聞きたいこと<span class="opt">任意</span></label>
+      <textarea id="note" name="note" maxlength="1000"></textarea>
+      <input class="hp" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="err" id="err" hidden></p>
+      <button class="submit" id="submit" type="submit">この内容で予約する</button>
+    </form>
+  </section>
+
+  <section class="card done" id="done" hidden>
+    <h2>ご予約が完了しました</h2>
+    <dl>
+      <dt>日時</dt><dd id="doneWhen"></dd>
+      <dt>担当</dt><dd id="doneMember"></dd>
+      <dt>場所</dt><dd>大阪府大阪市淀川区西中島1丁目9-20 新中島ビル3F</dd>
+    </dl>
+    <p class="msg">地下鉄御堂筋線 西中島南方駅／阪急京都線 南方駅から徒歩3分、JR新大阪駅から徒歩15分<br><a href="https://maps.app.goo.gl/bXewaHicER5rx19NA" target="_blank" rel="noopener">Googleマップで見る</a></p>
+    <p class="msg">ご入力のメールアドレスに Google カレンダーの招待が届きます。届かない場合は迷惑メールフォルダもご確認ください。</p>
+  </section>
+
+  <section class="card place">
+    <h2>場所</h2>
+    <p class="addr">大阪府大阪市淀川区西中島1丁目9-20 新中島ビル3F</p>
+    <p class="msg">地下鉄御堂筋線 西中島南方駅／阪急京都線 南方駅から徒歩3分、JR新大阪駅から徒歩15分</p>
+    <p class="msg"><a href="https://maps.app.goo.gl/bXewaHicER5rx19NA" target="_blank" rel="noopener">Googleマップで見る</a></p>
+  </section>
+
+  <section class="card about">
+    <h2>株式会社インターンについて</h2>
+    <p class="mission">出会いと環境の創出で、人々の時間に“好き”と“幸せ”を届ける</p>
+    <p>就活イベント「インターンEXPO」を運営する、2024年創業のHRスタートアップです。</p>
+    <ul>
+      <li>平均年齢23歳。肩書きや年次ではなく「どこまで本気で挑戦したいか」で仕事を任せるフラットな組織です。</li>
+      <li>年齢に関係なく、企業への営業から事業計画・採用・チームづくりまで、事業の最前線を担っています。</li>
+      <li>日本を代表する一流企業の人事担当者や経営者と、対等なビジネスパートナーとして向き合います。その経験を通じて、社会で通用する力をいち早く身につけられます。</li>
+    </ul>
+  </section>
+
+  <section class="card about">
+    <h2>面談でお話ししたいこと</h2>
+    <ul>
+      <li>会社と事業のこと（インターンEXPOの仕組みや、いま挑戦していること）</li>
+      <li>メンバーの働き方（大学との両立、任される仕事、身につく力）</li>
+      <li>あなたのこと（いま興味があること、学生のうちに挑戦したいこと）</li>
+      <li>気になることへのご質問（何でもお気軽にどうぞ）</li>
+    </ul>
+  </section>
+</main>
+<footer>© 株式会社インターン</footer>
+
+<script>
+  var API = 'https://script.google.com/macros/s/AKfycbxkX897dEieMI7vHnEFb8zhlkZR1LXfYLtPVtIRVuGAbca5ADg4OQLY7eYV-TBbg2aGAA/exec';
+  var state = { days: [], dayIndex: 0, slot: null };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function loadSlots() {
+    $('loading').hidden = false;
+    $('loading').textContent = '空き状況を読み込んでいます…';
+    $('days').innerHTML = '';
+    $('times').innerHTML = '';
+    fetch(API + '?api=slots')
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.message);
+        state.days = res.days || [];
+        state.dayIndex = 0;
+        if (!state.days.length) {
+          $('loading').textContent = '現在ご予約いただける日時がありません。時間をおいて再度お試しください。';
+          return;
+        }
+        $('loading').hidden = true;
+        renderDays();
+      })
+      .catch(function () {
+        $('loading').textContent = '読み込みに失敗しました。ページを再読み込みしてください。';
+      });
+  }
+
+  function renderDays() {
+    var box = $('days');
+    box.innerHTML = '';
+    state.days.forEach(function (d, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day' + (i === state.dayIndex ? ' on' : '');
+      b.textContent = d.label;
+      b.onclick = function () { state.dayIndex = i; renderDays(); };
+      box.appendChild(b);
+    });
+    renderTimes();
+  }
+
+  function renderTimes() {
+    var box = $('times');
+    box.innerHTML = '';
+    var day = state.days[state.dayIndex];
+    day.times.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'time' + (state.slot && state.slot.iso === t.iso ? ' on' : '');
+      b.textContent = t.label;
+      b.onclick = function () {
+        state.slot = { iso: t.iso, label: day.label + ' ' + t.label };
+        renderTimes();
+        $('pickErr').hidden = true;
+        $('pickedLabel').textContent = state.slot.label;
+        $('formCard').hidden = false;
+        $('err').hidden = true;
+        $('formCard').scrollIntoView({ behavior: 'smooth' });
+      };
+      box.appendChild(b);
+    });
+  }
+
+  function showError(text) {
+    $('err').textContent = text;
+    $('err').hidden = false;
+  }
+
+  function resetButton() {
+    $('submit').disabled = false;
+    $('submit').textContent = 'この内容で予約する';
+  }
+
+  $('form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var f = {
+      slot: state.slot && state.slot.iso,
+      name: $('name').value, email: $('email').value,
+      school: $('school').value, grade: $('grade').value, note: $('note').value,
+      website: $('website').value
+    };
+    if (!f.slot) return showError('日時を選んでください。');
+    if (!f.name.trim() || !f.email.trim() || !f.school.trim() || !f.grade.trim()) {
+      return showError('必須項目を入力してください。');
+    }
+    $('submit').disabled = true;
+    $('submit').textContent = '予約しています…';
+    $('err').hidden = true;
+    // 本文はJSON文字列のまま送る（text/plain なので事前確認なしで送れる）
+    fetch(API, { method: 'POST', body: JSON.stringify(f) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        resetButton();
+        if (!res || !res.ok) {
+          if (res && res.refresh) {
+            state.slot = null;
+            $('formCard').hidden = true;
+            $('pickErr').textContent = res.message;
+            $('pickErr').hidden = false;
+            $('pick').scrollIntoView({ behavior: 'smooth' });
+            loadSlots();
+            return;
+          }
+          return showError((res && res.message) || '予約に失敗しました。');
+        }
+        $('pick').hidden = true;
+        $('formCard').hidden = true;
+        document.querySelectorAll('.place, .about').forEach(function (el) { el.hidden = true; });
+        $('doneWhen').textContent = res.when;
+        $('doneMember').textContent = res.member;
+        $('done').hidden = false;
+        window.scrollTo(0, 0);
+      })
+      .catch(function () {
+        resetButton();
+        showError('予約に失敗しました。時間をおいてもう一度お試しください。');
+      });
+  });
+
+  loadSlots();
+</script>
+</body>
+</html>
